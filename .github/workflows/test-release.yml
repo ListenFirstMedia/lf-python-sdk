@@ -4,13 +4,14 @@ on:
     tags:
       - v*
 jobs:
+  defaults:
+    run:
+      working-directory: python
   test:
-    name: Run the SDK's test suite
+    name: Running the Python test suite
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: python
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v2
         with:
           python-version: 3.8
@@ -23,13 +24,11 @@ jobs:
           #pytest --record-mode=once tests/
 
   upload-test-pypi:
-    name: Upload to Test PyPI
+    name: Uploading to Test PyPI
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: python
     #needs: [test]
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v2
         with:
           python-version: 3.8
@@ -40,4 +39,7 @@ jobs:
       - name: Build distribution
         run: python3 -m build
       - name: Upload
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
         run: python3 -m twine upload -r testpypi dist/*
