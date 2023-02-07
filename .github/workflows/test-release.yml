@@ -3,10 +3,10 @@ on:
   push:
     tags:
       - v*
+defaults:
+  run:
+    working-directory: python
 jobs:
-  defaults:
-    run:
-      working-directory: python
   test:
     name: Running the Python test suite
     runs-on: ubuntu-latest
