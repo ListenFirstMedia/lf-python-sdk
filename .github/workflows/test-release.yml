@@ -27,7 +27,7 @@ jobs:
           API_HOST: https://api.lfmdev.in
           AUTH_HOST: https://auth.lfmdev.in
         run: |
-          python3 setup.py pytest
+          python3 -m pytest --record-mode=all tests
 
   upload-test-pypi:
     name: Uploading to Test PyPI
